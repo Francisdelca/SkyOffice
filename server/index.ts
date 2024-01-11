@@ -11,8 +11,18 @@ import { SkyOffice } from './rooms/SkyOffice'
 
 const port = Number(process.env.PORT || 2567)
 const app = express()
+const allowedOrigins = ['https://visionary-kashata-44e860.netlify.app'];
 
-app.use(cors())
+const corsOptions = {
+  origin: (origin:any, callback:any) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+app.use(cors(corsOptions))
 app.use(express.json())
 // app.use(express.static('dist'))
 
